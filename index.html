@@ -182,7 +182,7 @@
   </main>
 
   <script>
-    // فایل‌های واقعی و مجاز را با همین نام‌ها کنار index.html در ریشهٔ مخزن قرار دهید.
+    // Place authorized MP3 files beside index.html in the repository root.
     const tracks = [
       { title: "تو رگی", artist: "شایع", src: "to-ragi.mp3" },
       { title: "قلب منی", artist: "حامیم", src: "ghalb-mani.mp3" },
@@ -313,7 +313,7 @@
 
     renderTrackList();
     loadTrack(0);
-    // مرورگر ممکن است به‌دلیل سیاست autoplay این درخواست را رد کند.
+    // Browsers may block audible autoplay until the user interacts with the page.
     startPlayback();
   </script>
 </body>
