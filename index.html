@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#11131a">
-  <meta name="description" content="نمونه پلیر فهرست پخش دو آهنگ با پخش پیوسته و تکرار">
+  <meta name="description" content="نمونه پلیر فهرست پخش سه آهنگ با پخش پیوسته و تکرار">
   <title>فهرست پخش من</title>
   <style>
     :root {
@@ -182,11 +182,11 @@
   </main>
 
   <script>
-    // فایل‌های واقعی و مجاز را با همین نام‌ها در assets/audio قرار دهید.
+    // فایل‌های واقعی و مجاز را با همین نام‌ها کنار index.html در ریشهٔ مخزن قرار دهید.
     const tracks = [
-      { title: "تو رگی", artist: "شایع", src: "assets/audio/to-ragi.mp3" },
-      { title: "قلب منی", artist: "حامیم", src: "assets/audio/ghalb-mani.mp3" },
-      { title: "دست بردار (اجرای زنده)", artist: "Mira", src: "assets/audio/dast-bardar-live.mp3" }
+      { title: "تو رگی", artist: "شایع", src: "to-ragi.mp3" },
+      { title: "قلب منی", artist: "حامیم", src: "ghalb-mani.mp3" },
+      { title: "دست بردار (اجرای زنده)", artist: "Mira", src: "dast-bardar-live.mp3" }
     ];
 
     const audio = document.querySelector("#audio");
@@ -247,7 +247,7 @@
         if (error.name === "NotAllowedError") {
           setStatus("مرورگر پخش خودکار را مسدود کرد؛ برای شروع، دکمهٔ پخش را بزنید.", "blocked");
         } else if (error.name === "NotSupportedError") {
-          setStatus("فایل این آهنگ هنوز در پوشهٔ assets/audio قرار نگرفته است.", "needs-file");
+          setStatus("فایل این آهنگ در ریشهٔ مخزن بارگذاری نشده است.", "needs-file");
         } else {
           setStatus("پخش شروع نشد. فایل صوتی را بررسی کنید و دوباره پخش را بزنید.", "needs-file");
         }
@@ -308,7 +308,7 @@
     });
     audio.addEventListener("error", () => {
       setPlayButton(false);
-      setStatus(`فایل «${tracks[currentIndex].title}» پیدا نشد؛ فایل مجاز را با نام درست در assets/audio بگذارید.`, "needs-file");
+      setStatus(`فایل «${tracks[currentIndex].title}» پیدا نشد؛ فایل مجاز را با نام درست کنار index.html در ریشهٔ مخزن بگذارید.`, "needs-file");
     });
 
     renderTrackList();
@@ -318,3 +318,4 @@
   </script>
 </body>
 </html>
+
