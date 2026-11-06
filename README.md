@@ -1,52 +1,38 @@
-# نمونهٔ فهرست پخش
+# Playlist Demo
 
-یک صفحهٔ وب ایستا و راست‌چین برای سه آهنگ:
+A lightweight, responsive, right-to-left web player for three Persian-language tracks.
 
-- «تو رگی» از شایع
-- «قلب منی» از حامیم
-- «دست بردار (اجرای زنده)» از Mira
+**Live site:** [mahdika127.github.io/playlist-demo](https://mahdika127.github.io/playlist-demo/)
 
-## امکانات
+## Features
 
-- تلاش برای شروع پخش بلافاصله پس از بازشدن صفحه
-- نمایش پیام مناسب اگر مرورگر پخش خودکار را مسدود کند
-- کنترل‌های پخش/مکث، آهنگ بعدی و قبلی، و انتخاب آهنگ از فهرست
-- رفتن خودکار به آهنگ بعدی و تکرار فهرست از ابتدا
-- نمایش وضعیت، زمان آهنگ و نوار پیشرفت
-- طراحی سازگار با موبایل و دسکتاپ
+- Attempts autoplay when the page opens. Browsers may block audible autoplay; press **Play** if prompted.
+- Plays tracks in order and loops back to the first track after the last one.
+- Includes Play/Pause, Previous, Next, and direct track selection.
+- Shows playback status, elapsed time, duration, and progress.
+- Supports mobile and desktop layouts.
 
-## فایل‌های صوتی
+## Repository files
 
-فایل‌های MP3 ارائه‌شده برای این نمونه با نام‌های زیر کنار `index.html` در ریشهٔ مخزن قرار دارند:
+Keep these files in the repository root, beside `index.html`:
 
-- `to-ragi.mp3` — تو رگی
-- `ghalb-mani.mp3` — قلب منی
-- `dast-bardar-live.mp3` — دست بردار (اجرای زنده)
+| File | Track |
+| --- | --- |
+| `to-ragi.mp3` | To Ragi — Shayea |
+| `ghalb-mani.mp3` | Ghalbe Mani — Haamim |
+| `dast-bardar-live.mp3` | Dast Bardar (Live) — Mira |
 
-صفحه همین مسیرها را می‌خواند. برای تغییر آهنگ‌ها، نام فایل‌ها یا هنرمندها، آرایهٔ `tracks` در انتهای `index.html` را ویرایش کنید. این فایل‌ها از مسیرهای محلی ارائه‌شده برای ساخت نمونه کپی شده‌اند. پیش از بارگذاری عمومی در GitHub Pages، مطمئن شوید مجوز انتشار عمومی فایل‌ها را دارید؛ اگر ندارید، آن‌ها را با فایل‌های مجاز خودتان جایگزین کنید یا از مخزن عمومی حذف کنید.
+The player reads these exact filenames from the repository root. To change the playlist, edit the `tracks` array near the end of `index.html` and make sure each `src` matches its MP3 filename.
 
-## مشاهدهٔ محلی
+## Preview locally
 
-`index.html` را در مرورگر باز کنید. اگر مرورگر شروع خودکار صدا را نپذیرد، دکمهٔ پخش را بزنید. ممکن است مرورگرها یا تنظیمات دستگاه متفاوت رفتار کنند.
+Open `index.html` in a modern web browser. If autoplay is blocked, use the Play button.
 
-## انتشار رایگان با GitHub Pages
+## GitHub Pages
 
-برای استفادهٔ رایگان GitHub Pages، مخزن را عمومی بسازید. خود صفحهٔ منتشرشده در اینترنت برای همه قابل مشاهده خواهد بود. راهنمای رسمی: [انتخاب منبع انتشار](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) و [شروع سریع GitHub Pages](https://docs.github.com/en/pages/quickstart).
+The site is published from the `main` branch and repository root. To publish future updates, commit them to `main`; GitHub Pages will rebuild the site.
 
-1. وارد حساب GitHub شوید و یک مخزن عمومی، مثلاً با نام `playlist-demo`، بسازید.
-2. محتویات همین پوشه را در ریشهٔ مخزن قرار دهید؛ `index.html` و هر سه فایل MP3 باید کنار هم در ریشه باشند.
-3. در مخزن به **Settings → Pages** بروید.
-4. در بخش **Build and deployment**، گزینهٔ **Deploy from a branch** را انتخاب کنید.
-5. شاخهٔ `main` و پوشهٔ `/(root)` را انتخاب و **Save** کنید.
-6. پس از پایان انتشار، آدرس معمول پروژه چنین است: `https://USERNAME.github.io/playlist-demo/`؛ `USERNAME` را با نام کاربری GitHub عوض کنید.
+## Audio rights
 
-پس از هر بار بارگذاری تغییرات در شاخه و پوشهٔ انتخاب‌شده، Pages صفحه را دوباره منتشر می‌کند. این لینک تاریخ انقضای ازپیش‌تعیین‌شده ندارد؛ ماندگاری آن وابسته به باقی‌ماندن حساب و مخزن و در دسترس‌بودن سرویس GitHub است. دامنهٔ اختصاصی اختیاری است و باید جداگانه ثبت و تمدید شود.
-
-## چیزهایی که برای انتشار نهایی لازم است
-
-- فایل‌های صوتی قابل انتشار با نام‌های بالا، یا تصمیم برای استفاده از آهنگ‌های دیگری که مجاز به انتشارشان هستید.
-- حساب GitHub و یک مخزن برای نگهداری فایل‌ها؛ برای طرح رایگان، مخزن باید عمومی باشد.
-- نام کاربری GitHub برای ساختن آدرس نهایی. دامنهٔ اختصاصی اختیاری است.
-
-اطلاعات ورود یا رمز حساب را در فایل‌های پروژه قرار ندهید.
+This repository is public, so its MP3 files are publicly accessible. Keep only audio that you are authorized to distribute publicly.
 
