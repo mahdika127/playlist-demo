@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11131a">
+  <meta name="description" content="نمونه پلیر فهرست پخش دو آهنگ با پخش پیوسته و تکرار">
+  <title>فهرست پخش من</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #11131a;
+      --panel: rgba(29, 32, 43, .88);
+      --muted: #a9adbd;
+      --text: #f5f4fa;
+      --accent: #d5a7ff;
+      --accent-2: #8ce6d2;
+      --line: rgba(255, 255, 255, .1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 18px;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(128, 88, 180, .22), transparent 34rem),
+        radial-gradient(ellipse at 90% 90%, rgba(58, 145, 134, .16), transparent 32rem),
+        var(--bg);
+      font-family: Tahoma, "Segoe UI", sans-serif;
+    }
+    button { font: inherit; }
+    .player {
+      width: min(100%, 470px);
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--panel);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .36);
+      backdrop-filter: blur(18px);
+    }
+    .eyebrow { margin: 0 0 18px; color: var(--accent-2); font-size: .8rem; letter-spacing: .04em; }
+    .cover {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 22px;
+      background: linear-gradient(145deg, #4d356d, #241e39 55%, #183f44);
+    }
+    .cover::before, .cover::after {
+      position: absolute;
+      content: "";
+      width: 74%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 50%;
+      transform: rotate(-28deg) scaleY(.63);
+    }
+    .cover::after { width: 48%; border-color: rgba(255,255,255,.24); }
+    .cover-mark { z-index: 1; font-size: clamp(2.6rem, 16vw, 5rem); font-weight: 700; color: rgba(255,255,255,.88); }
+    .cover-caption { position: absolute; bottom: 17px; color: rgba(255,255,255,.72); font-size: .75rem; }
+    .track-heading { min-height: 77px; padding-top: 20px; }
+    h1 { margin: 0 0 7px; font-size: 1.42rem; }
+    .artist { margin: 0; color: var(--muted); font-size: .95rem; }
+    .status {
+      min-height: 46px;
+      margin: 12px 0 2px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+      background: rgba(255,255,255,.035);
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+    .status[data-kind="playing"] { color: var(--accent-2); }
+    .status[data-kind="needs-file"] { color: #ffd28b; }
+    .progress-row { display: flex; justify-content: space-between; margin: 13px 1px 7px; color: var(--muted); font-size: .72rem; direction: ltr; }
+    .progress {
+      width: 100%;
+      height: 5px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255,255,255,.13);
+    }
+    .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width .15s linear; }
+    .controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 20px 0 22px; }
+    .control {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .control:hover { transform: translateY(-2px); background: rgba(255,255,255,.12); }
+    .control:focus-visible, .track:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+    .control-main { width: 60px; height: 60px; border: 0; color: #191421; background: var(--accent); }
+    .control-main:hover { background: #e2c3ff; }
+    .control svg { width: 21px; height: 21px; fill: currentColor; }
+    .control-main svg { width: 25px; height: 25px; }
+    .section-title { margin: 0 0 9px; color: var(--muted); font-size: .78rem; font-weight: 500; }
+    .track-list { display: grid; gap: 7px; }
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      color: var(--text);
+      text-align: right;
+      background: rgba(255,255,255,.035);
+      cursor: pointer;
+    }
+    .track[aria-current="true"] { border-color: rgba(213,167,255,.3); background: rgba(213,167,255,.09); }
+    .track-number { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 auto; border-radius: 9px; color: var(--accent); background: rgba(213,167,255,.12); font-size: .8rem; }
+    .track-copy { display: grid; gap: 4px; }
+    .track-name { font-size: .86rem; }
+    .track-artist { color: var(--muted); font-size: .74rem; }
+    .loop-label { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 16px; color: var(--muted); font-size: .74rem; }
+    .loop-label svg { width: 15px; height: 15px; fill: var(--accent-2); }
+    .footnote { margin: 15px 0 0; color: #888d9d; font-size: .7rem; line-height: 1.7; text-align: center; }
+    @media (max-width: 420px) { .player { padding: 18px; border-radius: 23px; } .controls { gap: 17px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="player" aria-label="پخش‌کننده فهرست پخش">
+    <p class="eyebrow">یک فهرست پخش کوچک</p>
+    <div class="cover" aria-hidden="true">
+      <span class="cover-mark">♪</span>
+      <span class="cover-caption">سه آهنگ · پخش پیوسته</span>
+    </div>
+
+    <section class="track-heading" aria-live="polite">
+      <h1 id="track-title">تو رگی</h1>
+      <p class="artist" id="track-artist">شایع</p>
+    </section>
+
+    <p class="status" id="status" role="status" aria-live="polite">در حال آماده‌سازی پخش…</p>
+    <audio id="audio" preload="metadata"></audio>
+
+    <div class="progress-row" aria-hidden="true">
+      <span id="elapsed">0:00</span>
+      <span id="duration">--:--</span>
+    </div>
+    <div class="progress" role="progressbar" aria-label="میزان پیشرفت آهنگ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="controls" aria-label="کنترل‌های پخش">
+      <button class="control" id="previous" type="button" aria-label="آهنگ قبلی" title="قبلی">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zm3 7 11 7V5z"/></svg>
+      </button>
+      <button class="control control-main" id="play-pause" type="button" aria-label="پخش" title="پخش">
+        <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+      </button>
+      <button class="control" id="next" type="button" aria-label="آهنگ بعدی" title="بعدی">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+      </button>
+    </div>
+
+    <h2 class="section-title">آهنگ‌های فهرست</h2>
+    <div class="track-list" id="track-list"></div>
+    <div class="loop-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-2.5-2.5L17 3l5 5-5 5-1.5-1.5L18 9H7a3 3 0 0 0-3 3v1H2v-1a5 5 0 0 1 5-5zm10 10H6l2.5 2.5L7 21l-5-5 5-5 1.5 1.5L6 15h11a3 3 0 0 0 3-3v-1h2v1a5 5 0 0 1-5 5z"/></svg>
+      تکرار پیوستهٔ فهرست روشن است
+    </div>
+    <p class="footnote">فهرست پس از آهنگ سوم دوباره از ابتدا پخش می‌شود.</p>
+  </main>
+
+  <script>
+    // فایل‌های واقعی و مجاز را با همین نام‌ها در assets/audio قرار دهید.
+    const tracks = [
+      { title: "تو رگی", artist: "شایع", src: "assets/audio/to-ragi.mp3" },
+      { title: "قلب منی", artist: "حامیم", src: "assets/audio/ghalb-mani.mp3" },
+      { title: "دست بردار (اجرای زنده)", artist: "Mira", src: "assets/audio/dast-bardar-live.mp3" }
+    ];
+
+    const audio = document.querySelector("#audio");
+    const status = document.querySelector("#status");
+    const playPause = document.querySelector("#play-pause");
+    const playIcon = document.querySelector("#play-icon");
+    const pauseIcon = document.querySelector("#pause-icon");
+    const progressFill = document.querySelector("#progress-fill");
+    const progressBar = document.querySelector(".progress");
+    let currentIndex = 0;
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return "--:--";
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
+      return `${minutes}:${remainingSeconds}`;
+    }
+
+    function setStatus(message, kind = "info") {
+      status.textContent = message;
+      status.dataset.kind = kind;
+    }
+
+    function renderTrack() {
+      const track = tracks[currentIndex];
+      document.querySelector("#track-title").textContent = track.title;
+      document.querySelector("#track-artist").textContent = track.artist;
+      document.querySelectorAll(".track").forEach((button, index) => {
+        if (index === currentIndex) button.setAttribute("aria-current", "true");
+        else button.removeAttribute("aria-current");
+      });
+    }
+
+    function setPlayButton(isPlaying) {
+      playIcon.hidden = isPlaying;
+      pauseIcon.hidden = !isPlaying;
+      playPause.setAttribute("aria-label", isPlaying ? "مکث" : "پخش");
+      playPause.title = isPlaying ? "مکث" : "پخش";
+    }
+
+    function loadTrack(index) {
+      currentIndex = (index + tracks.length) % tracks.length;
+      audio.src = tracks[currentIndex].src;
+      audio.load();
+      renderTrack();
+      document.querySelector("#elapsed").textContent = "0:00";
+      document.querySelector("#duration").textContent = "--:--";
+      progressFill.style.width = "0%";
+      progressBar.setAttribute("aria-valuenow", "0");
+    }
+
+    async function startPlayback() {
+      try {
+        await audio.play();
+        setStatus(`در حال پخش: ${tracks[currentIndex].title}`, "playing");
+      } catch (error) {
+        setPlayButton(false);
+        if (error.name === "NotAllowedError") {
+          setStatus("مرورگر پخش خودکار را مسدود کرد؛ برای شروع، دکمهٔ پخش را بزنید.", "blocked");
+        } else if (error.name === "NotSupportedError") {
+          setStatus("فایل این آهنگ هنوز در پوشهٔ assets/audio قرار نگرفته است.", "needs-file");
+        } else {
+          setStatus("پخش شروع نشد. فایل صوتی را بررسی کنید و دوباره پخش را بزنید.", "needs-file");
+        }
+      }
+    }
+
+    function goToTrack(offset, { play = true } = {}) {
+      audio.pause();
+      loadTrack(currentIndex + offset);
+      setPlayButton(false);
+      if (play) startPlayback();
+      else setStatus(`آمادهٔ پخش: ${tracks[currentIndex].title}`);
+    }
+
+    function renderTrackList() {
+      const list = document.querySelector("#track-list");
+      tracks.forEach((track, index) => {
+        const button = document.createElement("button");
+        button.className = "track";
+        button.type = "button";
+        button.innerHTML = `<span class="track-number">${String(index + 1).padStart(2, "0")}</span><span class="track-copy"><span class="track-name"></span><span class="track-artist"></span></span>`;
+        button.querySelector(".track-name").textContent = track.title;
+        button.querySelector(".track-artist").textContent = track.artist;
+        button.addEventListener("click", () => {
+          audio.pause();
+          loadTrack(index);
+          setPlayButton(false);
+          startPlayback();
+        });
+        list.append(button);
+      });
+      renderTrack();
+    }
+
+    document.querySelector("#previous").addEventListener("click", () => goToTrack(-1));
+    document.querySelector("#next").addEventListener("click", () => goToTrack(1));
+    playPause.addEventListener("click", () => {
+      if (audio.paused) startPlayback();
+      else audio.pause();
+    });
+
+    audio.addEventListener("play", () => setPlayButton(true));
+    audio.addEventListener("pause", () => {
+      setPlayButton(false);
+      if (audio.currentTime > 0 && !audio.ended) setStatus("پخش متوقف شد.");
+    });
+    audio.addEventListener("ended", () => goToTrack(1));
+    audio.addEventListener("loadedmetadata", () => {
+      document.querySelector("#duration").textContent = formatTime(audio.duration);
+    });
+    audio.addEventListener("timeupdate", () => {
+      document.querySelector("#elapsed").textContent = formatTime(audio.currentTime);
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        const percent = Math.min(100, (audio.currentTime / audio.duration) * 100);
+        progressFill.style.width = `${percent}%`;
+        progressBar.setAttribute("aria-valuenow", Math.round(percent).toString());
+      }
+    });
+    audio.addEventListener("error", () => {
+      setPlayButton(false);
+      setStatus(`فایل «${tracks[currentIndex].title}» پیدا نشد؛ فایل مجاز را با نام درست در assets/audio بگذارید.`, "needs-file");
+    });
+
+    renderTrackList();
+    loadTrack(0);
+    // مرورگر ممکن است به‌دلیل سیاست autoplay این درخواست را رد کند.
+    startPlayback();
+  </script>
+</body>
+</html>
